@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    /* Base styles */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+    }
+
+    /* Top Banner Styles */
+    .top-banner {
+      background-color: #000000;
+      color: #ffffff;
+      text-align: center;
+      padding: 8px 0;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .top-banner p a {
+      color: #ffffff;
+      font-weight: 600;
+      text-decoration: underline;
+      margin-left: 5px;
+    }
+
+    .language-selector {
+      position: absolute;
+      right: 5%;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Header Styles */
+    .main-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .main-nav ul {
+      display: flex;
+      list-style: none;
+      gap: 40px;
+    }
+
+    .main-nav a {
+      color: #000000;
+      text-decoration: none;
+      padding-bottom: 5px;
+      transition: border-color 0.3s;
+    }
+
+    .main-nav a:hover,
+    .main-nav .active {
+      border-bottom: 1px solid #000000;
+      font-weight: 500;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .search-area {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      padding: 8px 12px;
+      width: 250px;
+    }
+
+    .search-area input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .search-area .fa-search {
+      color: #000000;
+      cursor: pointer;
+    }
+
+    /* Icon links container */
+    .icon-links {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    /* Icon styles (using empty img src as requested) */
+    .icon-link-container {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .icon-links img {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .icon-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #db4444;
+      color: #ffffff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+    }
+
+    .profile-icon {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      /* Red background for profile icon */
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      padding: 40px 5% 80px;
+      color: #909090;
+      font-size: 14px;
+    }
+
+    .breadcrumb a {
+      color: #000000;
+      margin-right: 8px;
+      text-decoration: none;
+    }
+
+    .breadcrumb span {
+      font-weight: 600;
+      color: #000000;
+    }
+
+    /* ================================== */
+    /* CART SPECIFIC STYLES               */
+    /* ================================== */
+
+    .cart-container {
+      padding: 0 5% 140px;
+    }
+
+    /* Table Header */
+    .cart-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      padding: 24px 40px;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      border-radius: 4px;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* Cart Item Rows */
+    .cart-item {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      align-items: center;
+      padding: 24px 40px;
+      box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      border-radius: 4px;
+      margin-bottom: 30px;
+    }
+
+    .product-col {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* NEW: Wrapper for image and cancel button */
+    .product-image-wrapper {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      background-color: #f5f5f5;
+      /* Placeholder background */
+      border-radius: 4px;
+    }
+
+    /* Image inside the wrapper */
+    .product-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Remove Icon Placeholder (The 'X' mark) */
+    .remove-icon {
+      position: absolute;
+      /* Positioned relative to .product-image-wrapper */
+      top: -6px;
+      left: -6px;
+      background-color: #db4444;
+      color: #ffffff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    /* Quantity Input Styling */
+    .quantity-input-container {
+      display: flex;
+      align-items: center;
+      width: 72px;
+      height: 44px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    .quantity-input-container input[type="number"] {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      text-align: center;
+      appearance: none;
+      -moz-appearance: textfield;
+      /* Firefox hides arrow buttons */
+      padding-right: 20px;
+      /* Space for the arrows */
+    }
+
+    .quantity-input-container input::-webkit-outer-spin-button,
+    .quantity-input-container input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    .quantity-controls {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      right: 20px;
+      height: 44px;
+      justify-content: space-between;
+    }
+
+    .quantity-controls button {
+      background: none;
+      border: none;
+      color: #000000;
+      font-size: 10px;
+      cursor: pointer;
+      line-height: 0;
+      padding: 0;
+    }
+
+    .quantity-controls button:hover {
+      color: #db4444;
+    }
+
+    /* Buttons below cart items */
+    .cart-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 50px;
+      margin-bottom: 80px;
+    }
+
+    .btn-secondary {
+      border: 1px solid #000000;
+      padding: 16px 48px;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background-color 0.2s, color 0.2s;
+      text-decoration: none;
+      color: #000000;
+    }
+
+    .btn-secondary:hover {
+      background-color: #f5f5f5;
+    }
+
+    .btn-primary {
+      background-color: #db4444;
+      color: #ffffff;
+      padding: 16px 48px;
+      border-radius: 4px;
+      font-weight: 500;
+      border: none;
+      transition: background-color 0.2s;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: #c0392b;
+    }
+
+    /* Coupon and Cart Total Area */
+    .cart-summary {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .coupon-section {
+      flex: 1;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .coupon-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #000000;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .btn-apply {
+      padding: 12px 48px;
+      border: none;
+    }
+
+    .cart-total-card {
+      width: 470px;
+      padding: 32px;
+      border: 1.5px solid #000000;
+      border-radius: 4px;
+    }
+
+    .cart-total-card h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    .total-row:first-child {
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .total-row:nth-child(2) {
+      border-bottom: 1px solid #000000;
+    }
+
+    .total-row p {
+      font-size: 16px;
+    }
+
+    .total-row .label {
+      font-weight: 400;
+    }
+
+    .total-row .value {
+      font-weight: 500;
+    }
+
+    .total-row.final-total .value {
+      font-weight: 600;
+      color: #db4444;
+      /* Match image color */
+    }
+
+    .btn-checkout-container {
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    /* Footer Styles */
+    .main-footer {
+      background-color: #000000;
+      color: #ffffff;
+      padding: 60px 5% 20px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .footer-col {
+      min-width: 150px;
+    }
+
+    .footer-col h3,
+    .footer-col h4 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .footer-col h4 {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .footer-col p {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: block;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #ddd;
+    }
+
+    .email-subscribe {
+      display: flex;
+      align-items: center;
+      border: 1px solid #707070;
+      border-radius: 4px;
+      padding: 8px 12px;
+      margin-top: 10px;
+      width: 180px;
+    }
+
+    .email-subscribe input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      width: 100%;
+    }
+
+    .email-subscribe i {
+      color: #ffffff;
+    }
+
+    .app-download {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .qr-code-placeholder {
+      width: 76px;
+      height: 76px;
+      background-color: #ffffff;
+      border-radius: 4px;
+      /* Placeholder for QR Code image */
+    }
+
+    .app-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .badge-placeholder {
+      width: 100px;
+      height: 30px;
+      background-color: #ffffff;
+      border-radius: 4px;
+      /* Placeholder for app store badges */
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .social-icons a {
+      color: #ffffff;
+      font-size: 20px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      margin-top: 30px;
+      border-top: 1px solid #333333;
+    }
+
+    .footer-bottom p {
+      color: #707070;
+      font-size: 14px;
+    }
+
+    /* ================================== */
+    /* RESPONSIVENESS (Mobile/Tablet)     */
+    /* ================================== */
+
+    /* Hide language selector on smaller screens */
+    @media (max-width: 767px) {
+      .language-selector {
+        display: none;
+      }
+    }
+
+    /* Tablet/Mobile Header (Below 1024px) */
+    @media (max-width: 1023px) {
+      .main-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px 5%;
+      }
+
+      .main-nav {
+        width: 100%;
+        margin-top: 15px;
+      }
+
+      .main-nav ul {
+        gap: 20px;
+        justify-content: space-around;
+        width: 100%;
+      }
+
+      .header-right {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 15px;
+      }
+
+      .search-area {
+        width: 60%;
+        /* Shorter search bar on smaller screens */
+      }
+
+      /* Mobile adjustment for header icons */
+      .header-right .icon-links {
+        gap: 12px;
+      }
+
+      .header-right .icon-badge {
+        font-size: 8px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    /* Cart Content Layout (Below 1024px) */
+    @media (max-width: 1023px) {
+
+      /* Grid setup for mobile */
+      .cart-header,
+      .cart-item {
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns stacked */
+        padding: 20px 20px;
+        gap: 10px 20px;
+      }
+
+      .cart-header {
+        display: none;
+        /* Hide header on small screens */
+      }
+
+      .cart-item {
+        margin-bottom: 20px;
+        /* Explicitly assign grid areas for better control */
+        grid-template-areas:
+          "product product"
+          "price quantity"
+          "subtotal subtotal";
+      }
+
+      .product-col {
+        grid-area: product;
+      }
+
+      .price-col {
+        grid-area: price;
+      }
+
+      .quantity-col {
+        grid-area: quantity;
+        justify-self: flex-end;
+      }
+
+      .subtotal-col {
+        grid-area: subtotal;
+        border-top: 1px solid #f0f0f0;
+        padding-top: 10px;
+        margin-top: 10px;
+      }
+
+      .product-col img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .cart-actions {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .btn-secondary,
+      .btn-primary {
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+      }
+
+      .cart-summary {
+        flex-direction: column;
+      }
+
+      .coupon-section {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .coupon-input {
+        width: 100%;
+      }
+
+      .btn-apply {
+        width: 100%;
+        padding: 12px 0;
+      }
+
+      .cart-total-card {
+        width: 100%;
+      }
+    }
+
+    /* Footer Layout (Below 767px) */
+    @media (max-width: 767px) {
+      .footer-content {
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .footer-col {
+        min-width: 100%;
+      }
+
+      .email-subscribe {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <p>
+      Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
+      <a href="shop.html">ShopNow</a>
+    </p>
+    <div class="language-selector">
+      <span>English</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="logo">Exclusive</div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="Ecommerce Homepage.html">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="About.html">About</a></li>
+        <li><a href="index.html">Sign Up</a></li>
+      </ul>
+    </nav>
+    <div class="header-right">
+      <div class="search-area">
+        <input type="text" placeholder="What are you looking for?" />
+        <i class="fas fa-search"></i>
+      </div>
+      <!-- Icon Links (Using empty src for images as requested + Badges) -->
+      <div class="icon-links">
+        <!-- Wishlist Icon with count 4 -->
+        <div class="icon-link-container">
+          <a href="wishlist.html"><img src="wishlast.png" alt="Wishlist Icon" class="w-6 h-6" /></a>
+          <span class="icon-badge">4</span>
+        </div>
+        <!-- Cart Icon with count 2 -->
+        <div class="icon-link-container">
+          <a href="cart.html"><img src="cart.png" alt="Cart Icon" class="w-6 h-6" /></a>
+          <span class="icon-badge">2</span>
+        </div>
+        <!-- Placeholder for Profile Icon (using CSS for visual) -->
+        <img src="user.png" alt="Profile Icon" class="profile-icon" />
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="Ecommerce Homepage.html">Home /</a>
+    <span>Cart</span>
+  </div>
+
+  <!-- Cart Main Content -->
+  <main class="cart-container">
+    <!-- Cart Header -->
+    <div class="cart-header bg-white">
+      <p>Product</p>
+      <p>Price</p>
+      <p>Quantity</p>
+      <p>Subtotal</p>
+    </div>
+
+    <!-- Cart Item 1: LCD Monitor -->
+    <div class="cart-item bg-white" data-price="650">
+      <!-- Product Column -->
+      <div class="product-col">
+        <!-- NEW WRAPPER for image and cancel icon -->
+        <div class="product-image-wrapper">
+          <!-- Placeholder image for the TV/Monitor -->
+          <img src="tv.png" alt="LCD Monitor Image" />
+          <!-- Remove/Cancel Icon (The 'X') -->
+          <span class="remove-icon">X</span>
+        </div>
+        <span>LCD Monitor</span>
+      </div>
+      <!-- Price Column -->
+      <div class="price-col">$650</div>
+      <!-- Quantity Column -->
+      <div class="quantity-col">
+        <div class="quantity-input-container">
+          <input type="number" value="1" min="1" class="quantity-input" data-item-id="item1" readonly />
+          <div class="quantity-controls">
+            <button type="button" class="quantity-up" data-target="item1"><i class="fas fa-caret-up"></i></button>
+            <button type="button" class="quantity-down" data-target="item1"><i class="fas fa-caret-down"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- Subtotal Column -->
+      <div class="subtotal-col" data-subtotal-id="item1">$650</div>
+    </div>
+
+    <!-- Cart Item 2: H1 Gamepad -->
+    <div class="cart-item bg-white" data-price="550">
+      <!-- Product Column -->
+      <div class="product-col">
+        <!-- NEW WRAPPER for image and cancel icon -->
+        <div class="product-image-wrapper">
+          <!-- Placeholder image for the Gamepad -->
+          <img src="game.png" alt="H1 Gamepad Image" />
+          <!-- Remove/Cancel Icon (The 'X') -->
+          <span class="remove-icon">X</span>
+        </div>
+        <span>H1 Gamepad</span>
+      </div>
+      <!-- Price Column -->
+      <div class="price-col">$550</div>
+      <!-- Quantity Column -->
+      <div class="quantity-col">
+        <div class="quantity-input-container">
+          <input type="number" value="2" min="1" class="quantity-input" data-item-id="item2" readonly />
+          <div class="quantity-controls">
+            <button type="button" class="quantity-up" data-target="item2"><i class="fas fa-caret-up"></i></button>
+            <button type="button" class="quantity-down" data-target="item2"><i class="fas fa-caret-down"></i></button>
+          </div>
+        </div>
+      </div>
+      <!-- Subtotal Column -->
+      <div class="subtotal-col" data-subtotal-id="item2">$1100</div>
+    </div>
+
+    <!-- Cart Action Buttons -->
+    <div class="cart-actions">
+      <a href="#" class="btn-secondary">Return To Shop</a>
+      <button class="btn-secondary" id="updateCartBtn">Update Cart</button>
+    </div>
+
+    <!-- Coupon and Cart Total Summary -->
+    <div class="cart-summary">
+      <!-- Coupon Section -->
+      <div class="coupon-section">
+        <input type="text" placeholder="Coupon Code" class="coupon-input" />
+        <button class="btn-primary btn-apply">Apply Coupon</button>
+      </div>
+
+      <!-- Cart Total Card -->
+      <div class="cart-total-card bg-white">
+        <h2>Cart Total</h2>
+        <!-- Subtotal Row -->
+        <div class="total-row">
+          <p class="label">Subtotal:</p>
+          <p class="value" id="subtotalValue">$1750</p>
+        </div>
+        <!-- Shipping Row -->
+        <div class="total-row">
+          <p class="label">Shipping:</p>
+          <p class="value">Free</p>
+        </div>
+        <!-- Total Row -->
+        <div class="total-row final-total">
+          <p class="label">Total:</p>
+          <p class="value" id="totalValue">$1750</p>
+        </div>
+
+        <div class="btn-checkout-container">
+          <a href="checkout.html" class="btn-primary">Proceed to checkout</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Main Footer -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <!-- Exclusive Section -->
+      <div class="footer-col footer-col-1">
+        <h3 class="footer-logo">Exclusive</h3>
+        <h4>Subscribe</h4>
+        <p>Get 10% off your first order</p>
+        <div class="email-subscribe">
+          <input type="email" placeholder="Enter your email" />
+          <i class="fas fa-paper-plane"></i>
+        </div>
+      </div>
+
+      <!-- Support Section -->
+      <div class="footer-col">
+        <h4>Support</h4>
+        <p>
+          111 Bijoy sarani, Dhaka, <br />
+          DH 1515, Bangladesh.
+        </p>
+        <p>EXCLUSIVE@gmail.com</p>
+        <p>+88015-88888-9999</p>
+      </div>
+
+      <!-- Account Section -->
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="account.html">My Account</a></li>
+          <li><a href="login.html">Login / Register</a></li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="wishlist.html">Wishlist</a></li>
+          <li><a href="shop.html">Shop</a></li>
+        </ul>
+      </div>
+
+      <!-- Quick Link Section -->
+      <div class="footer-col">
+        <h4>Quick Link</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Download App Section -->
+      <div class="footer-col footer-col-5">
+        <h4>Download App</h4>
+        <p>Save $3 with App New User Only</p>
+        <div class="app-download">
+          <!-- Placeholder for QR Code image -->
+          <img src="Qrcode.png" alt="QR Code" class="qr-code-placeholder" />
+          <div class="app-badges">
+            <!-- Placeholder for Google Play Badge image -->
+            <img src="googleplay1.png" alt="Google Play Badge" class="badge-placeholder" />
+            <!-- Placeholder for App Store Badge image -->
+            <img src="appstore1.png" alt="App Store Badge" class="badge-placeholder" />
+          </div>
+        </div>
+        <div class="social-icons">
+          <a href="#" aria-label="Facebook"><img src="Icon-Facebook.png" alt=""></a>
+          <a href="#" aria-label="Twitter"><img src="Icon-Twitter.png" alt=""></a>
+          <a href="#" aria-label="Instagram"><img src="icon-instagram.png" alt=""></a>
+          <a href="#" aria-label="LinkedIn"><img src="Icon-Linkedin.png" alt=""></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <p>
+        <i class="far fa-copyright"></i> Copyright Rimel 2022. All right
+        reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // Function to calculate and update the subtotal and total for the entire cart
+    function updateCartTotals() {
+      let grandTotal = 0;
+      const cartItems = document.querySelectorAll('.cart-item');
+
+      cartItems.forEach(item => {
+        // Parse price from data attribute
+        const price = parseFloat(item.dataset.price);
+
+        // Find the quantity input for the current item
+        const quantityInput = item.querySelector('.quantity-input');
+        // Use 0 if input is missing or value is NaN/empty, to prevent errors
+        const quantity = parseInt(quantityInput.value) || 0;
+
+        const subtotalElement = item.querySelector('[data-subtotal-id]');
+
+        const itemSubtotal = price * quantity;
+        grandTotal += itemSubtotal;
+
+        // Update item subtotal display with formatting
+        subtotalElement.textContent = '$' + itemSubtotal.toLocaleString();
+      });
+
+      // Update cart summary
+      const subtotalValueElement = document.getElementById('subtotalValue');
+      const totalValueElement = document.getElementById('totalValue');
+
+      const formattedTotal = '$' + grandTotal.toLocaleString();
+
+      subtotalValueElement.textContent = formattedTotal;
+      // Assuming shipping is free for this example, Total = Subtotal
+      totalValueElement.textContent = formattedTotal;
+    }
+
+    // Function to handle quantity changes
+    function handleQuantityChange(targetId, change) {
+      const input = document.querySelector(`.quantity-input[data-item-id="${targetId}"]`);
+      if (input) {
+        let currentValue = parseInt(input.value);
+        if (isNaN(currentValue)) currentValue = 0; // Handle non-numeric or empty input
+
+        let newValue = currentValue + change;
+        const min = parseInt(input.min);
+
+        // Ensure quantity doesn't go below minimum
+        if (newValue < min) {
+          newValue = min;
+        }
+
+        input.value = newValue;
+        updateCartTotals(); // Recalculate totals immediately
+      }
+    }
+
+    // Event listeners for quantity buttons and other interactions
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Initial calculation of totals on load
+      updateCartTotals();
+
+      // 2. Setup listeners for the up/down buttons
+      document.querySelectorAll('.quantity-up').forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.dataset.target;
+          handleQuantityChange(targetId, 1);
+        });
+      });
+
+      document.querySelectorAll('.quantity-down').forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.dataset.target;
+          handleQuantityChange(targetId, -1);
+        });
+      });
+
+      // 3. 'Update Cart' button functionality
+      const updateBtn = document.getElementById('updateCartBtn');
+      if (updateBtn) {
+        updateBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          updateCartTotals();
+        });
+      }
+
+      // 4. Implement logic for the 'X' remove icon
+      document.querySelectorAll('.remove-icon').forEach(icon => {
+        icon.addEventListener('click', (e) => {
+          const itemRow = e.target.closest('.cart-item');
+          if (itemRow) {
+            itemRow.remove(); // Remove the item from the DOM
+            updateCartTotals(); // Update totals after removal
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+
+</html>
