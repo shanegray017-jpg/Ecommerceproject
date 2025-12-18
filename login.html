@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exclusive | Log in</title>
+
+  <!-- CSS Link -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Font Awesome for icons (Search, Arrows, Social, etc.) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+
+<body>
+  <!-- 1. Top Promotion Banner -->
+  <div class="top-banner">
+    <p>
+      Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
+      <a href="shop.html">ShopNow</a>
+    </p>
+    <div class="language-selector">
+      <span>English</span>
+      <i class="fas fa-chevron-down"></i>
+    </div>
+  </div>
+
+  <!-- 2. Main Navigation Bar -->
+  <header class="main-header">
+    <div class="logo">Exclusive</div>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="Ecommerce Homepage.html">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="About.html">About</a></li>
+        <!-- Header link to Sign Up page is present and NOT active -->
+        <li><a href="index.html">Sign Up</a></li>
+      </ul>
+    </nav>
+    <div class="search-area">
+      <input type="text" placeholder="What are you looking for?" />
+      <i class="fas fa-search"></i>
+    </div>
+  </header>
+
+  <!-- 3. Main Content - Two-Column Layout (Log In Form) -->
+  <main class="sign-up-container">
+    <!-- Left Side: Image Placeholder (Will load SideImage.png via CSS) -->
+    <div class="image-column">
+      <!-- This div will hold the background image via CSS -->
+      <div class="image-placeholder"></div>
+    </div>
+
+    <!-- Right Side: Log In Form -->
+    <div class="form-column">
+      <div class="form-content">
+        <h1>Log in to Exclusive</h1>
+        <p class="subtitle">Enter your details below</p>
+
+        <form class="sign-up-form" id="loginForm">
+          <!-- Input 1: Email or Phone Number (ID for JavaScript) --><input type="email"
+            placeholder="Email or Phone Number" id="emailInput" required />
+          <!-- Input 2: Password (ID for JavaScript) --><input type="password" placeholder="Password" id="passwordInput"
+            required />
+
+          <!-- Log In Button and Forgot Password Link are side-by-side -->
+          <div class="login-actions">
+            <!-- Primary Red Button --><button type="submit" class="btn btn-primary">Log In</button>
+            <!-- Forgot Password Link --><a href="404 Error.html" class="forgot-password-link">Forgot Password?</a>
+          </div>
+        </form>
+
+        <!-- The "Don't have an account? Sign Up" link is removed from here to match the image. -->
+      </div>
+    </div>
+  </main>
+
+  <!-- 4. Footer Section -->
+  <footer class="main-footer">
+    <div class="footer-content">
+      <!-- Column 1: Exclusive (Subscription) -->
+      <div class="footer-col footer-col-1">
+        <h3 class="footer-logo">Exclusive</h3>
+        <h4>Subscribe</h4>
+        <p>Get 10% off your first order</p>
+        <div class="email-subscribe">
+          <input type="email" placeholder="Enter your email" />
+          <i class="fas fa-paper-plane"></i>
+        </div>
+      </div>
+
+      <!-- Column 2: Support -->
+      <div class="footer-col">
+        <h4>Support</h4>
+        <p>
+          111 Bijoy sarani, Dhaka, <br />
+          DH 1515, Bangladesh.
+        </p>
+        <p>EXCLUSIVE@gmail.com</p>
+        <p>+88015-88888-9999</p>
+      </div>
+
+      <!-- Column 3: Account -->
+      <div class="footer-col">
+        <h4>Account</h4>
+        <ul>
+          <li><a href="account.html">My Account</a></li>
+          <!-- Log In / Register in footer is active on this page -->
+          <li>
+            <a href="login.html" class="active-footer-link">Login / Register</a>
+          </li>
+          <li><a href="cart.html">Cart</a></li>
+          <li><a href="wishlist.html">Wishlist</a></li>
+          <li><a href="shop.html">Shop</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Quick Link -->
+      <div class="footer-col">
+        <h4>Quick Link</h4>
+        <ul>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms Of Use</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 5: Download App -->
+      <div class="footer-col footer-col-5">
+        <h4>Download App</h4>
+        <p>Save $3 with App New User Only</p>
+        <div class="app-download">
+          <!-- QR Code Image Source --><img src="Qrcode.png" alt="QR Code" class="qr-code-placeholder" />
+          <div class="app-badges">
+            <!-- Google Play Badge Source --><img src="googleplay1.png" alt="Google Play Badge"
+              class="badge-placeholder" />
+            <!-- App Store Badge Source --><img src="appstore1.png" alt="App Store Badge" class="badge-placeholder" />
+          </div>
+        </div>
+        <div class="social-icons">
+          <!-- Social Icons --><a href="#" aria-label="Facebook"><img src="Icon-Facebook.png" alt=""></a>
+          <a href="#" aria-label="Twitter"><img src="Icon-Twitter.png" alt=""></a>
+          <a href="#" aria-label="Instagram"><img src="icon-instagram.png" alt=""></a>
+          <a href="#" aria-label="LinkedIn"><img src="Icon-Linkedin.png" alt=""></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copyright Line -->
+    <div class="footer-bottom">
+      <p>
+        <i class="far fa-copyright"></i> Copyright Rimel 2022. All right
+        reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>
